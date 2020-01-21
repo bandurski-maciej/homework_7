@@ -1,1 +1,1 @@
-# homework_7
+# hibernate-demo
