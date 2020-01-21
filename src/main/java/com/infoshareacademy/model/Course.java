@@ -1,64 +1,69 @@
 package com.infoshareacademy.model;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 @NamedQueries({
-    @NamedQuery(
-        name = "Course.findAll",
-        query = "SELECT c FROM Course c"
-    )
+        @NamedQuery(
+                name = "Course.findAll",
+                query = "SELECT c FROM Course c"
+        )
 })
 @Entity
 @Table(name = "COURSES")
 public class Course {
 
-  @Id
-  @Column(name = "name", length = 16)
-  private String name;
+    @Id
+    @Column(name = "name", length = 16)
+    private String name;
 
-  @ManyToMany(mappedBy = "courses")
-  private List<Student> students;
+    @ManyToMany(mappedBy = "courses")
+    private List<Student> students;
 
-  public Course() {
-  }
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY) // here many to many
+    private List<Teacher> teachers;
 
-  public Course(String name) {
-    this.name = name;
-  }
+    public Course() {
+    }
 
-  public String getName() {
-    return name;
-  }
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
+    }
 
-  public List<Student> getStudents() {
-    return students;
-  }
+    public Course(String name) {
+        this.name = name;
+    }
 
-  public void setStudents(List<Student> students) {
-    this.students = students;
-  }
+    public String getName() {
+        return name;
+    }
 
-  @Override
-  public String toString() {
-    final StringBuffer sb = new StringBuffer("Course{");
-    sb.append("name='").append(name).append('\'');
-    sb.append(", students=").append(students != null ? students
-        .stream()
-        .map(Student::getSurname)
-        .collect(Collectors.joining(", ")) : "");
-    sb.append('}');
-    return sb.toString();
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Course{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", students=").append(students != null ? students
+                .stream()
+                .map(Student::getSurname)
+                .collect(Collectors.joining(", ")) : "");
+        sb.append('}');
+        return sb.toString();
+    }
 }
