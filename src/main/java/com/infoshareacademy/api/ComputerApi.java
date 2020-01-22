@@ -2,10 +2,10 @@ package com.infoshareacademy.api;
 
 import com.infoshareacademy.dao.ComputerDao;
 import com.infoshareacademy.model.Computer;
-import com.infoshareacademy.model.Student;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -35,4 +35,27 @@ public class ComputerApi {
       .collect(Collectors.toList())
       .toString();
   }
+
+  @Path("/{id}")
+  @DELETE
+  @Transactional
+  @Produces(MediaType.TEXT_PLAIN)
+  public int deleteComputer(@PathParam("id") String id) {
+    Long idLong = Long.parseLong(id);
+
+    List<Computer> computers = computerDao.findAll();
+    boolean validator = false;
+    for (Computer computer : computers) {
+      if (computer.getId().equals(idLong)) {
+        validator = true;
+        break;
+      }
+    }
+
+    if (validator) {
+      computerDao.delete(idLong);
+      return HttpServletResponse.SC_OK;
+    } else return HttpServletResponse.SC_NOT_FOUND;
+  }
 }
+
