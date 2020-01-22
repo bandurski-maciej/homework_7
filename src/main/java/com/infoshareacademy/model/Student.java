@@ -16,6 +16,12 @@ import java.util.List;
     @NamedQuery(
         name = "Student.findAll",
         query = "SELECT s FROM Student s"
+    ),
+    @NamedQuery(
+        name = "Student.findByName",
+        query = "SELECT s " +
+          "FROM Student s " +
+          "WHERE s.name = :name"
     )
 })
 public class Student {

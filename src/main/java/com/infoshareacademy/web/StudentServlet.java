@@ -56,7 +56,7 @@ public class StudentServlet extends HttpServlet {
         Course course3 = new Course("JJFD9");
         courseDao.save(course3);
 
-        Teacher t1 = new Teacher("Adam", "Przyby", "98798765678", Arrays.asList(course2));
+        Teacher t1 = new Teacher("Jasiu", "Jasiu", "12345678911", Arrays.asList(course2));
         teacherDao.save(t1);
 
         // Addresses

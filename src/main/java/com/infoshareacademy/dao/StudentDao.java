@@ -1,11 +1,15 @@
 package com.infoshareacademy.dao;
 
 import com.infoshareacademy.model.Student;
+import com.infoshareacademy.web.StudentServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,6 +18,8 @@ public class StudentDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private Logger LOG = LoggerFactory.getLogger(StudentDao.class);
 
     public Long save(Student s) {
         entityManager.persist(s);
@@ -35,6 +41,7 @@ public class StudentDao {
         return entityManager.find(Student.class, id);
     }
 
+    @Transactional
     public List<Student> findAll() {
         final Query query = entityManager.createQuery("SELECT s FROM Student s");
 
@@ -80,4 +87,11 @@ public class StudentDao {
         query.setParameter("param1", date);
         return query.getResultList();
     }
+
+  public List<Student> findByName(String name) {
+      Query query = entityManager.createNamedQuery("Student.findByName");
+      query.setParameter("name", name);
+      LOG.info("Found {} objects", query.getResultList().size());
+      return query.getResultList();
+  }
 }
